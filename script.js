@@ -1,172 +1,191 @@
-/* ============================================
-   SKYTECH LANDING PAGE - JAVASCRIPT
-   Smooth animations, scroll effects, interactivity
-   ============================================ */
-
-// ---- INTERSECTION OBSERVER FOR SCROLL ANIMATIONS ----
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -100px 0px'
-};
-
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.classList.add('in-view');
       observer.unobserve(entry.target);
     }
   });
-}, observerOptions);
+}, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' });
 
-// Observe all elements with fade-in-on-scroll class
-document.querySelectorAll('.service-card, .skill-category, .project-card').forEach(el => {
+document.querySelectorAll('.glass, .hero-copy, .section-header, .service-card, .skill-card, .project-card, .cv-preview, .cv-info, .contact-card, .contact-form').forEach((el) => {
+  el.classList.add('fade-up');
   observer.observe(el);
 });
 
-// ---- SMOOTH SCROLL OFFSET FOR FIXED NAV ----
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+const navLinks = document.querySelectorAll('a[href^="#"]');
+navLinks.forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const targetId = link.getAttribute('href');
+    const target = document.querySelector(targetId);
     if (target) {
-      const offset = 80; // Account for fixed navbar
-      const elementPosition = target.offsetTop - offset;
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
+      event.preventDefault();
+      const offset = document.querySelector('.navbar').offsetHeight + 12;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   });
 });
 
-// ---- NAVBAR BACKGROUND ON SCROLL ----
 const navbar = document.querySelector('.navbar');
-let lastScrollY = 0;
-
 window.addEventListener('scroll', () => {
-  lastScrollY = window.scrollY;
-  
-  if (lastScrollY > 50) {
-    navbar.style.background = 'rgba(11, 15, 26, 0.9)';
-    navbar.style.backdropFilter = 'blur(20px)';
+  if (window.scrollY > 40) {
+    navbar.style.background = 'rgba(9, 11, 18, 0.82)';
+    navbar.style.borderBottomColor = 'rgba(255, 255, 255, 0.08)';
   } else {
-    navbar.style.background = 'rgba(11, 15, 26, 0.7)';
+    navbar.style.background = 'rgba(9, 11, 18, 0.55)';
+    navbar.style.borderBottomColor = 'rgba(255, 255, 255, 0.06)';
   }
 });
 
-// ---- PARALLAX EFFECT ON HERO GLOWS ----
 const heroGlow = document.querySelector('.hero-glow');
-const heroGlow2 = document.querySelector('.hero-glow-2');
-
-if (heroGlow && heroGlow2) {
-  window.addEventListener('mousemove', (e) => {
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    
-    heroGlow.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
-    heroGlow2.style.transform = `translate(${-x * 30}px, ${-y * 30}px)`;
-  });
-}
-
-// ---- PAGE LOAD ANIMATION ----
-window.addEventListener('load', () => {
-  document.body.classList.add('loaded');
+const heroGlowSecondary = document.querySelector('.hero-glow-secondary');
+window.addEventListener('mousemove', (event) => {
+  const x = (event.clientX / window.innerWidth - 0.5) * 30;
+  const y = (event.clientY / window.innerHeight - 0.5) * 30;
+  if (heroGlow) heroGlow.style.transform = `translate(${x}px, ${y}px)`;
+  if (heroGlowSecondary) heroGlowSecondary.style.transform = `translate(${-x}px, ${-y}px)`;
 });
 
-// ---- BUTTON RIPPLE EFFECT ----
 const buttons = document.querySelectorAll('.btn');
-
-buttons.forEach(button => {
-  button.addEventListener('click', function(e) {
+buttons.forEach((button) => {
+  button.addEventListener('click', (event) => {
     const ripple = document.createElement('span');
-    const rect = this.getBoundingClientRect();
+    ripple.className = 'ripple';
+    const rect = button.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
-    ripple.classList.add('ripple');
-    
-    this.appendChild(ripple);
-    
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+    button.appendChild(ripple);
     setTimeout(() => ripple.remove(), 600);
   });
 });
 
-// ---- FORM VALIDATION (IF NEEDED FOR FUTURE) ----
-const contactForm = document.querySelector('form');
-if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Add form handling logic here
-    console.log('Form submitted');
-  });
-}
+const form = document.getElementById('contactForm');
+const statusContainer = document.getElementById('statusMessage');
+const apiEndpoint = document.body.dataset.apiUrl || '/api/contact';
 
-// ---- LAZY LOAD IMAGES (FUTURE USE) ----
-if ('IntersectionObserver' in window) {
-  const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.classList.add('loaded');
-        observer.unobserve(img);
+const showStatus = (message, success = true) => {
+  if (!statusContainer) return;
+  statusContainer.textContent = message;
+  statusContainer.className = success ? 'status-message status-success' : 'status-message status-error';
+};
+
+if (form) {
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+    showStatus('Sending your message to the SkyTech API...', true);
+
+    const formData = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      subject: form.subject.value.trim(),
+      message: form.message.value.trim(),
+    };
+
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        showStatus(data.error || 'Unable to send your message right now. Please try again later.', false);
+      } else {
+        showStatus(data.message || 'Message sent successfully.', true);
+        form.reset();
       }
+    } catch (error) {
+      console.error('Contact API error:', error);
+      showStatus('Network or API error. Be sure your backend is running or the live endpoint is configured.', false);
+    }
+
+    submitButton.disabled = false;
+    submitButton.textContent = 'Send Inquiry';
+  });
+}
+
+const cvData = {
+  name: 'Musa Sherif',
+  title: 'Founder of SkyTech | Remote Technology Engineer',
+  email: 'skytech08088@gmail.com',
+  location: 'Remote',
+  summary: 'Founder-led remote engineer with multidisciplinary experience in cybersecurity, web development, digital marketing, and telecom optimization.',
+  skills: ['Cybersecurity Architecture', 'React • Node.js', 'Campaign Strategy', 'Drive Test Analysis', 'Linux • Git • Automation'],
+  experience: [
+    'Freelance Remote Consultant — Cybersecurity & Web Engineering',
+    'Founder, SkyTech — Remote technology solutions',
+    'Consultant — Digital marketing campaign delivery',
+  ],
+  projects: [
+    'SkyTech Portfolio Website — founder brand exposure',
+    'Digital Campaign Analysis — ROI growth plan',
+    'Network Optimization — coverage and performance tuning',
+  ],
+};
+
+const downloadCv = document.getElementById('downloadCv');
+if (downloadCv && window.jspdf) {
+  downloadCv.addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const margin = 40;
+    let y = 50;
+    doc.setFontSize(22);
+    doc.setTextColor(15, 23, 42);
+    doc.text(cvData.name, margin, y);
+    doc.setFontSize(12);
+    doc.setTextColor(77, 77, 77);
+    doc.text(cvData.title, margin, y + 26);
+    doc.setTextColor(100, 100, 125);
+    doc.text(`${cvData.location} • ${cvData.email}`, margin, y + 46);
+    y += 80;
+    doc.setDrawColor(200);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, 555, y);
+    y += 24;
+    doc.setFontSize(14);
+    doc.setTextColor(18, 21, 36);
+    doc.text('Summary', margin, y);
+    y += 20;
+    doc.setFontSize(11);
+    const summaryLines = doc.splitTextToSize(cvData.summary, 515);
+    doc.text(summaryLines, margin, y);
+    y += summaryLines.length * 16 + 20;
+    doc.setFontSize(14);
+    doc.text('Skills', margin, y);
+    y += 18;
+    doc.setFontSize(11);
+    cvData.skills.forEach((item) => {
+      doc.text(`• ${item}`, margin, y);
+      y += 16;
     });
+    y += 12;
+    doc.setFontSize(14);
+    doc.text('Experience', margin, y);
+    y += 18;
+    doc.setFontSize(11);
+    cvData.experience.forEach((item) => {
+      const lines = doc.splitTextToSize(`• ${item}`, 515);
+      doc.text(lines, margin, y);
+      y += lines.length * 16;
+    });
+    y += 12;
+    doc.setFontSize(14);
+    doc.text('Featured Projects', margin, y);
+    y += 18;
+    doc.setFontSize(11);
+    cvData.projects.forEach((item) => {
+      const lines = doc.splitTextToSize(`• ${item}`, 515);
+      doc.text(lines, margin, y);
+      y += lines.length * 16;
+    });
+    doc.save('SkyTech-CV-Musa-Sherif.pdf');
   });
-  
-  document.querySelectorAll('img[data-src]').forEach(img => {
-    imageObserver.observe(img);
-  });
 }
-
-// ---- MOBILE MENU TOGGLE (FOR FUTURE EXPANSION) ----
-const createMobileMenu = () => {
-  const navbar = document.querySelector('.navbar');
-  const navLinks = document.querySelector('.nav-links');
-  
-  // Can be expanded for mobile menu functionality
-};
-
-// ---- PERFORMANCE: DEBOUNCE SCROLL EVENTS ----
-function debounce(func, delay) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
-const debouncedScroll = debounce(() => {
-  // Optimized scroll handler
-}, 100);
-
-window.addEventListener('scroll', debouncedScroll);
-
-// ---- DARK MODE TOGGLE (OPTIONAL FEATURE) ----
-// Uncomment to enable light mode toggle
-/*
-const toggleDarkMode = () => {
-  document.body.classList.toggle('light-mode');
-  localStorage.setItem('darkMode', !document.body.classList.contains('light-mode'));
-};
-
-// Check for saved preference
-if (localStorage.getItem('darkMode') === 'false') {
-  document.body.classList.add('light-mode');
-}
-*/
-
-// ---- ACCESSIBILITY: FOCUS MANAGEMENT ----
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    // Handle escape key for modals (when added)
-  }
-});
-
-// ---- CONSOLE MESSAGE (EASTER EGG) ----
-console.log('%cWelcome to SkyTech! 🚀', 'font-size: 16px; color: #4da3ff; font-weight: bold;');
-console.log('%cBuilt with precision and security.', 'color: #38bdf8;');
