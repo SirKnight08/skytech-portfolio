@@ -3,114 +3,288 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SkyTech | Musa Sherif</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-    }
-
-    header {
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    }
-
-    header h1 {
-      font-size: 40px;
-      margin: 0;
-    }
-
-    header p {
-      font-size: 18px;
-      opacity: 0.8;
-    }
-
-    section {
-      padding: 50px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    h2 {
-      color: #38bdf8;
-    }
-
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      margin: 10px 0;
-      border-radius: 10px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #020617;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      margin-top: 10px;
-      background: #38bdf8;
-      color: black;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-  </style>
+  <title>SkyTech - Secure. Build. Scale.</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <header>
-    <h1>SkyTech</h1>
-    <p>Cybersecurity • Hardware Engineering • Full-Stack Development</p>
-    <a class="btn" href="mailto:skytech08088@gmail.com">Contact Me</a>
-  </header>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">⚡</span>
+        <span>SkyTech</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
 
-  <section>
-    <h2>About SkyTech</h2>
-    <p>
-      SkyTech is a technology brand founded by Musa Sherif focused on cybersecurity,
-      hardware repair, and modern web development solutions.
-    </p>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="gradient-text">Secure.</span>
+        <span class="gradient-text">Build.</span>
+        <span class="gradient-text">Scale</span>
+        <span class="gradient-text">with SkyTech.</span>
+      </h1>
+      <p class="hero-subtitle">Cybersecurity • Hardware Engineering • Full-Stack Development</p>
+      <div class="hero-buttons">
+        <a href="mailto:skytech08088@gmail.com" class="btn btn-primary">Get in Touch</a>
+        <a href="#services" class="btn btn-secondary">View Services</a>
+      </div>
+    </div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
   </section>
 
-  <section>
-    <h2>Services</h2>
-
-    <div class="card">Cybersecurity & Digital Protection</div>
-    <div class="card">Laptop & Desktop Repair</div>
-    <div class="card">Motherboard Diagnostics</div>
-    <div class="card">Full-Stack Web Development</div>
-  </section>
-
-  <section>
-    <h2>Skills</h2>
-
-    <div class="card">Python • JavaScript • HTML • CSS</div>
-    <div class="card">React • Node.js • Express</div>
-    <div class="card">Linux • Networking • Security</div>
-  </section>
-
-  <section>
-    <h2>Contact</h2>
-    <div class="card">
-      Email: skytech08088@gmail.com<br/>
-      Founder: Musa Sherif
+  <!-- Trust Strip -->
+  <section class="trust-strip">
+    <div class="trust-container">
+      <div class="trust-item">
+        <div class="trust-icon">🔒</div>
+        <span>Secure Systems</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🔧</div>
+        <span>Professional Repairs</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🚀</div>
+        <span>Modern Web Apps</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🛡️</div>
+        <span>Cybersecurity Expertise</span>
+      </div>
     </div>
   </section>
 
-  <footer>
-    © 2026 SkyTech. All rights reserved.
+  <!-- About SkyTech -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-content">
+        <h2>About SkyTech</h2>
+        <p class="about-text">
+          SkyTech is a modern technology solutions brand founded by <strong>Musa Sherif</strong>, dedicated to delivering enterprise-grade security, precision hardware engineering, and innovative web development. We combine deep technical expertise with a commitment to building solutions that matter.
+        </p>
+        <p class="about-text">
+          From securing digital infrastructure to diagnosing complex hardware issues and architecting scalable web applications, SkyTech represents the intersection of security, engineering excellence, and modern development practices.
+        </p>
+        <div class="founder-card glass">
+          <div class="founder-header">Founder</div>
+          <h3>Musa Sherif</h3>
+          <p>Full-Stack Engineer & Cybersecurity Specialist</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="container">
+      <h2>Our Services</h2>
+      <p class="section-subtitle">Premium solutions engineered for maximum impact</p>
+      <div class="services-grid">
+        <div class="service-card glass">
+          <div class="service-icon">🔐</div>
+          <h3>Cybersecurity & Digital Protection</h3>
+          <p>Enterprise-grade security solutions, threat assessment, and digital infrastructure hardening.</p>
+        </div>
+        <div class="service-card glass">
+          <div class="service-icon">💻</div>
+          <h3>Laptop & Desktop Repair</h3>
+          <p>Professional hardware diagnostics, repairs, and optimization for peak performance.</p>
+        </div>
+        <div class="service-card glass">
+          <div class="service-icon">🔌</div>
+          <h3>Motherboard Diagnostics</h3>
+          <p>Advanced system-level diagnostics and component-level troubleshooting.</p>
+        </div>
+        <div class="service-card glass">
+          <div class="service-icon">⚙️</div>
+          <h3>Full-Stack Web Development</h3>
+          <p>Modern web applications built with clean architecture and scalable design patterns.</p>
+        </div>
+        <div class="service-card glass">
+          <div class="service-icon">🌐</div>
+          <h3>IT Infrastructure Support</h3>
+          <p>Systems administration, deployment, and ongoing infrastructure management.</p>
+        </div>
+        <div class="service-card glass">
+          <div class="service-icon">🎯</div>
+          <h3>Network Security & Pen Testing</h3>
+          <p>Vulnerability assessments and penetration testing to identify security gaps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills">
+    <div class="container">
+      <h2>Technical Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-category glass">
+          <h3>Programming Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">HTML/CSS</span>
+            <span class="skill-tag">Bash</span>
+          </div>
+        </div>
+        <div class="skill-category glass">
+          <h3>Frontend & UI</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">CSS3</span>
+            <span class="skill-tag">Responsive Design</span>
+            <span class="skill-tag">UI/UX Principles</span>
+          </div>
+        </div>
+        <div class="skill-category glass">
+          <h3>Backend & Databases</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Express.js</span>
+            <span class="skill-tag">APIs</span>
+            <span class="skill-tag">SQL/NoSQL</span>
+          </div>
+        </div>
+        <div class="skill-category glass">
+          <h3>Systems & Infrastructure</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Windows</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">Networking</span>
+          </div>
+        </div>
+        <div class="skill-category glass">
+          <h3>Security & DevOps</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Penetration Testing</span>
+            <span class="skill-tag">Network Security</span>
+            <span class="skill-tag">CI/CD</span>
+            <span class="skill-tag">System Hardening</span>
+          </div>
+        </div>
+        <div class="skill-category glass">
+          <h3>Hardware & Tools</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Diagnostics</span>
+            <span class="skill-tag">Assembly</span>
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Debugging</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <h2>Recent Projects</h2>
+      <p class="section-subtitle">Showcase of engineered solutions</p>
+      <div class="projects-grid">
+        <div class="project-card glass">
+          <div class="project-header">
+            <h3>SkyTech Portfolio Website</h3>
+            <span class="project-tag">Featured</span>
+          </div>
+          <p>Premium SaaS-style landing page demonstrating modern web design principles and responsive architecture.</p>
+          <div class="project-tech">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+          </div>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+
+        <div class="project-card glass">
+          <div class="project-header">
+            <h3>Python Automation Tools</h3>
+            <span class="project-tag">Tools</span>
+          </div>
+          <p>Efficient automation scripts for system tasks, file management, and security-focused operations.</p>
+          <div class="project-tech">
+            <span>Python</span>
+            <span>Automation</span>
+            <span>Scripting</span>
+          </div>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+
+        <div class="project-card glass">
+          <div class="project-header">
+            <h3>Cybersecurity Toolkit</h3>
+            <span class="project-tag">Security</span>
+          </div>
+          <p>Comprehensive toolkit for network analysis, vulnerability scanning, and penetration testing workflows.</p>
+          <div class="project-tech">
+            <span>Python</span>
+            <span>Networking</span>
+            <span>Security</span>
+          </div>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+
+        <div class="project-card glass">
+          <div class="project-header">
+            <h3>React Dashboard UI</h3>
+            <span class="project-tag">Frontend</span>
+          </div>
+          <p>Modern, interactive dashboard with real-time data visualization and intuitive user interface design.</p>
+          <div class="project-tech">
+            <span>React</span>
+            <span>JavaScript</span>
+            <span>UI Design</span>
+          </div>
+          <a href="#" class="project-link">View Project →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact-card glass">
+        <h2>Ready to Start a Project?</h2>
+        <p class="contact-subtitle">Let's build something exceptional together</p>
+        <div class="contact-info">
+          <div class="contact-detail">
+            <span class="contact-label">Email</span>
+            <a href="mailto:skytech08088@gmail.com">skytech08088@gmail.com</a>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-label">Founder</span>
+            <span>Musa Sherif</span>
+          </div>
+        </div>
+        <a href="mailto:skytech08088@gmail.com" class="btn btn-primary btn-large">Start a Project</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2026 SkyTech. All rights reserved.</p>
+        <p class="footer-tagline">Built with precision and security</p>
+      </div>
+    </div>
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
