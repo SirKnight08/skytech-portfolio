@@ -84,7 +84,9 @@ if (form) {
     const formData = {
       name: form.name.value.trim(),
       email: form.email.value.trim(),
-      subject: form.subject.value.trim(),
+      phone: form.phone.value.trim(),
+      company: form.company.value.trim(),
+      service: form.service.value.trim(),
       message: form.message.value.trim(),
     };
 
