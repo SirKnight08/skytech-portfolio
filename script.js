@@ -8,6 +8,7 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' });
 
 document.querySelectorAll('.glass, .hero-copy, .section-header, .service-card, .skill-card, .project-card, .cv-preview, .cv-info, .contact-card, .contact-form').forEach((el) => {
+  el.dataset.aos = 'fade-up';
   el.classList.add('fade-up');
   observer.observe(el);
 });
@@ -131,6 +132,16 @@ const cvData = {
 };
 
 const downloadCv = document.getElementById('downloadCv');
+if (window.AOS) {
+  AOS.init({
+    duration: 850,
+    easing: 'ease-out-cubic',
+    once: true,
+    mirror: false,
+    offset: 120,
+  });
+}
+
 if (downloadCv && window.jspdf) {
   downloadCv.addEventListener('click', () => {
     const { jsPDF } = window.jspdf;
