@@ -33,6 +33,18 @@
             <div id="adminPanel" style="margin-top:20px; display:none;">
               <h3>Contacts</h3>
               <div id="contactsList"></div>
+
+              <hr />
+              <h3>Create Project</h3>
+              <div class="glass" style="padding:14px;">
+                <label>Title<input id="projTitle"/></label>
+                <label>Slug<input id="projSlug"/></label>
+                <label>Category<input id="projCategory"/></label>
+                <label>Description<textarea id="projDesc"></textarea></label>
+                <button id="createProj" class="btn btn-secondary">Create Project</button>
+              </div>
+              <h3 style="margin-top:18px;">Projects</h3>
+              <div id="projectsList"></div>
             </div>
           </div>
         </section>
@@ -90,7 +102,35 @@
         d.innerHTML = `<strong>${c.name}</strong> <small>${c.email}</small><div>${c.message || ''}</div>`;
         list.appendChild(d);
       });
+      loadProjects();
     }
+
+    async function loadProjects(){
+      const token = localStorage.getItem('skytech_admin_token');
+      const r = await fetch('/api/projects');
+      const data = await r.json();
+      const list = document.getElementById('projectsList');
+      list.innerHTML = '';
+      (data.data || []).forEach(p => {
+        const d = document.createElement('div');
+        d.className = 'glass';
+        d.style.padding='12px';
+        d.style.marginBottom='12px';
+        d.innerHTML = `<strong>${p.title}</strong> <small>${p.category||''}</small><div>${(p.description||'').slice(0,200)}</div>`;
+        list.appendChild(d);
+      });
+    }
+
+    document.getElementById('createProj').addEventListener('click', async ()=>{
+      const title = document.getElementById('projTitle').value.trim();
+      const slug = document.getElementById('projSlug').value.trim();
+      const category = document.getElementById('projCategory').value.trim();
+      const description = document.getElementById('projDesc').value.trim();
+      const token = localStorage.getItem('skytech_admin_token');
+      const r = await fetch('/api/admin/projects', { method: 'POST', headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` }, body: JSON.stringify({ title, slug, category, description }) });
+      const res = await r.json();
+      if (res.data) { loadProjects(); }
+    });
   </script>
 </body>
 </html>
