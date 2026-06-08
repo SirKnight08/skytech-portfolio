@@ -46,19 +46,23 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body data-api-url="http://localhost:3000/api/contact"
-      data-api-prod="https://your-backend.onrender.com/api/contact">
+<body data-api-url="https://skytech-backend-production.up.railway.app/api/contact">
   <nav class="navbar">
     <div class="nav-inner container">
+            <button class="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <a class="brand" href="#top">
         <span class="brand-mark">SkyTech</span>
         <span class="brand-text">Remote Technology Founder</span>
       </a>
       <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="services.html">Services</a>
-        <a href="projects.html">Projects</a>
+        <a href="#top">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
         <a href="resume.html">Resume</a>
         <a href="blog.html">Blog</a>
         <a href="pricing.html">Pricing</a>
@@ -77,7 +81,7 @@
           <p class="hero-title">Founder of SkyTech | Remote Technology Engineer</p>
           <p class="hero-text">Cybersecurity • Web Development • Digital Marketing • Network Optimization</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="resume.html"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CV</a>
+            <button id="downloadCvHeader" class="btn btn-primary"><i class="fa-solid fa-download" aria-hidden="true"></i>Download CV</button>
             <a class="btn btn-secondary" href="contact.html"><i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i>Hire Me</a>
           </div>
           <div class="hero-metrics">
@@ -411,8 +415,8 @@
             </label>
           </div>
           <label>
-            Subject
-            <input type="text" name="subject" placeholder="Project subject" required />
+            Service
+            <input type="text" name="service" placeholder="Project or service type" required />
           </label>
           <label>
             Message

@@ -13,29 +13,65 @@ document.querySelectorAll('.glass, .hero-copy, .section-header, .service-card, .
   observer.observe(el);
 });
 
-const navLinks = document.querySelectorAll('a[href^="#"]');
+const nav = document.querySelector('.navbar');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = Array.from(document.querySelectorAll('section[id]'));
+
+const scrollToSection = (targetId) => {
+  const target = document.querySelector(targetId);
+  if (!target) return;
+  const offset = nav ? nav.offsetHeight + 12 : 20;
+  const top = target.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top, behavior: 'smooth' });
+};
+
+const updateActiveNav = () => {
+  const scrollPosition = window.scrollY + (nav ? nav.offsetHeight + 24 : 80);
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const anchor = document.querySelector(`.nav-links a[href$="#${section.id}"]`);
+    if (!anchor) return;
+    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+      anchor.classList.add('active');
+    } else {
+      anchor.classList.remove('active');
+    }
+  });
+};
+
+if (navToggle) {
+  navToggle.addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.toggle('open');
+    navToggle.classList.toggle('open');
+  });
+}
+
 navLinks.forEach((link) => {
   link.addEventListener('click', (event) => {
-    const targetId = link.getAttribute('href');
-    const target = document.querySelector(targetId);
-    if (target) {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
       event.preventDefault();
-      const offset = document.querySelector('.navbar').offsetHeight + 12;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
+      scrollToSection(href);
+    }
+    const mobileNav = document.querySelector('.nav-links.open');
+    if (mobileNav) {
+      mobileNav.classList.remove('open');
+      navToggle?.classList.remove('open');
     }
   });
 });
 
-const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 40) {
-    navbar.style.background = 'rgba(9, 11, 18, 0.82)';
-    navbar.style.borderBottomColor = 'rgba(255, 255, 255, 0.08)';
-  } else {
-    navbar.style.background = 'rgba(9, 11, 18, 0.55)';
-    navbar.style.borderBottomColor = 'rgba(255, 255, 255, 0.06)';
+  if (nav) {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
   }
+  updateActiveNav();
+});
+
+window.addEventListener('load', () => {
+  updateActiveNav();
 });
 
 const heroGlow = document.querySelector('.hero-glow');
@@ -62,15 +98,103 @@ buttons.forEach((button) => {
   });
 });
 
+const apiEndpoint = document.body.dataset.apiUrl?.trim() || 'https://skytech-backend-production.up.railway.app/api/contact';
 const form = document.getElementById('contactForm');
 const statusContainer = document.getElementById('statusMessage');
-const apiEndpoint = document.body.dataset.apiUrl?.trim() || '/api/contact';
+const downloadCvHeader = document.getElementById('downloadCvHeader');
+const downloadCv = document.getElementById('downloadCv');
 
 const showStatus = (message, success = true) => {
   if (!statusContainer) return;
   statusContainer.textContent = message;
   statusContainer.className = success ? 'status-message status-success' : 'status-message status-error';
 };
+
+const showButtonLoading = (button, loading = true) => {
+  if (!button) return;
+  button.classList.toggle('loading', loading);
+  button.textContent = loading ? 'Loading...' : button.dataset.originalText;
+};
+
+const createResumePdf = () => {
+  if (!window.jspdf) {
+    return null;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const margin = 40;
+  let y = 50;
+
+  doc.setFontSize(22);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Musa Sherif', margin, y);
+  doc.setFontSize(12);
+  doc.setTextColor(200, 200, 220);
+  doc.text('Founder of SkyTech | Remote Technology Engineer', margin, y + 26);
+  doc.text('skytech08088@gmail.com | Remote', margin, y + 42);
+  y += 90;
+  doc.setFontSize(14);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Summary', margin, y);
+  y += 20;
+  doc.setFontSize(11);
+  doc.setTextColor(200, 200, 220);
+  doc.text('Remote technology engineer with multidisciplinary experience in cybersecurity, web development, digital marketing, and telecom optimization.', margin, y, { maxWidth: 510 });
+  y += 70;
+  doc.setFontSize(14);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Expertise', margin, y);
+  y += 24;
+  doc.setFontSize(11);
+  const expertise = [
+    'Cybersecurity Architecture',
+    'Responsive Web Development',
+    'Conversion Marketing Strategy',
+    'Drive Test Performance Analysis',
+  ];
+  expertise.forEach((item) => {
+    doc.text(`• ${item}`, margin, y);
+    y += 18;
+  });
+  y += 14;
+  doc.setFontSize(14);
+  doc.text('Projects', margin, y);
+  y += 22;
+  const projects = [
+    'SkyTech Portfolio Website — founder brand exposure',
+    'Digital Campaign Analysis — ROI growth plan',
+    'Network Optimization — coverage and performance tuning',
+  ];
+  projects.forEach((item) => {
+    doc.text(`• ${item}`, margin, y);
+    y += 18;
+  });
+
+  return doc;
+};
+
+const bindDownloadCv = (button) => {
+  if (!button) return;
+  button.dataset.originalText = button.textContent;
+  button.addEventListener('click', async (event) => {
+    event.preventDefault();
+    if (!window.jspdf) {
+      window.location.href = 'resume.html';
+      return;
+    }
+
+    showButtonLoading(button, true);
+    const doc = createResumePdf();
+    if (doc) {
+      doc.save('SkyTech-CV-Musa-Sherif.pdf');
+    }
+    showButtonLoading(button, false);
+  });
+};
+
+bindDownloadCv(downloadCvHeader);
+bindDownloadCv(downloadCv);
 
 if (form) {
   form.addEventListener('submit', async (event) => {
@@ -122,26 +246,6 @@ if (form) {
   });
 }
 
-const cvData = {
-  name: 'Musa Sherif',
-  title: 'Founder of SkyTech | Remote Technology Engineer',
-  email: 'skytech08088@gmail.com',
-  location: 'Remote',
-  summary: 'Founder-led remote engineer with multidisciplinary experience in cybersecurity, web development, digital marketing, and telecom optimization.',
-  skills: ['Cybersecurity Architecture', 'React • Node.js', 'Campaign Strategy', 'Drive Test Analysis', 'Linux • Git • Automation'],
-  experience: [
-    'Freelance Remote Consultant — Cybersecurity & Web Engineering',
-    'Founder, SkyTech — Remote technology solutions',
-    'Consultant — Digital marketing campaign delivery',
-  ],
-  projects: [
-    'SkyTech Portfolio Website — founder brand exposure',
-    'Digital Campaign Analysis — ROI growth plan',
-    'Network Optimization — coverage and performance tuning',
-  ],
-};
-
-const downloadCv = document.getElementById('downloadCv');
 if (window.AOS) {
   AOS.init({
     duration: 850,
@@ -149,64 +253,5 @@ if (window.AOS) {
     once: true,
     mirror: false,
     offset: 120,
-  });
-}
-
-if (downloadCv && window.jspdf) {
-  downloadCv.addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-    const margin = 40;
-    let y = 50;
-    doc.setFontSize(22);
-    doc.setTextColor(15, 23, 42);
-    doc.text(cvData.name, margin, y);
-    doc.setFontSize(12);
-    doc.setTextColor(77, 77, 77);
-    doc.text(cvData.title, margin, y + 26);
-    doc.setTextColor(100, 100, 125);
-    doc.text(`${cvData.location} • ${cvData.email}`, margin, y + 46);
-    y += 80;
-    doc.setDrawColor(200);
-    doc.setLineWidth(0.5);
-    doc.line(margin, y, 555, y);
-    y += 24;
-    doc.setFontSize(14);
-    doc.setTextColor(18, 21, 36);
-    doc.text('Summary', margin, y);
-    y += 20;
-    doc.setFontSize(11);
-    const summaryLines = doc.splitTextToSize(cvData.summary, 515);
-    doc.text(summaryLines, margin, y);
-    y += summaryLines.length * 16 + 20;
-    doc.setFontSize(14);
-    doc.text('Skills', margin, y);
-    y += 18;
-    doc.setFontSize(11);
-    cvData.skills.forEach((item) => {
-      doc.text(`• ${item}`, margin, y);
-      y += 16;
-    });
-    y += 12;
-    doc.setFontSize(14);
-    doc.text('Experience', margin, y);
-    y += 18;
-    doc.setFontSize(11);
-    cvData.experience.forEach((item) => {
-      const lines = doc.splitTextToSize(`• ${item}`, 515);
-      doc.text(lines, margin, y);
-      y += lines.length * 16;
-    });
-    y += 12;
-    doc.setFontSize(14);
-    doc.text('Featured Projects', margin, y);
-    y += 18;
-    doc.setFontSize(11);
-    cvData.projects.forEach((item) => {
-      const lines = doc.splitTextToSize(`• ${item}`, 515);
-      doc.text(lines, margin, y);
-      y += lines.length * 16;
-    });
-    doc.save('SkyTech-CV-Musa-Sherif.pdf');
   });
 }
