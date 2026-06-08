@@ -64,7 +64,7 @@ buttons.forEach((button) => {
 
 const form = document.getElementById('contactForm');
 const statusContainer = document.getElementById('statusMessage');
-const apiEndpoint = document.body.dataset.apiUrl || '/api/contact';
+const apiEndpoint = document.body.dataset.apiUrl?.trim() || '/api/contact';
 
 const showStatus = (message, success = true) => {
   if (!statusContainer) return;
@@ -106,8 +106,8 @@ if (form) {
         // Analytics hooks: push events for GA4, Meta Pixel, TikTok
         try {
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: 'contact_form_submitted', formData: { name: formData.name, email: formData.email, service: formData.subject } });
-          if (window.gtag) window.gtag('event', 'conversion', { event_category: 'contact', event_label: formData.subject });
+          window.dataLayer.push({ event: 'contact_form_submitted', formData: { name: formData.name, email: formData.email, service: formData.service } });
+          if (window.gtag) window.gtag('event', 'conversion', { event_category: 'contact', event_label: formData.service });
           if (window.fbq) window.fbq('track', 'Lead');
           if (window.ttq && window.ttq.track) window.ttq.track('Lead');
         } catch (e) { console.warn('Analytics event error', e); }
